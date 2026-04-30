@@ -1,0 +1,11 @@
+{
+  "domain": "meteoblue",
+  "name": "Meteoblue",
+  "codeowners": ["@local"],
+  "config_flow": true,
+  "documentation": "https://github.com/local/meteoblueHomeAssistant",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "loggers": ["custom_components.meteoblue"],
+  "requirements": []
+}

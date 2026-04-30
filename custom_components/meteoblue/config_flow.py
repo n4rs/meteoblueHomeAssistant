@@ -5,6 +5,7 @@ from __future__ import annotations
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
+from homeassistant.helpers import selector
 
 from .const import *
 
@@ -44,18 +45,18 @@ class MeteoblueConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_USE_HA_LOCATION, default=True): bool,
                 vol.Optional(CONF_LATITUDE, default=self.hass.config.latitude): vol.Coerce(float),
                 vol.Optional(CONF_LONGITUDE, default=self.hass.config.longitude): vol.Coerce(float),
-                vol.Required(CONF_PACKAGES, default=[PACKAGE_BASIC, PACKAGE_CURRENT]): config_entries.selector.SelectSelector(
-                    config_entries.selector.SelectSelectorConfig(
+                vol.Required(CONF_PACKAGES, default=[PACKAGE_BASIC, PACKAGE_CURRENT]): selector.SelectSelector(
+                    selector.SelectSelectorConfig(
                         options=[
-                            config_entries.selector.SelectOptionDict(value=k, label=v)
+                            selector.SelectOptionDict(value=k, label=v)
                             for k, v in PACKAGE_LABELS.items()
                         ],
                         multiple=True,
                         mode="dropdown",
                     )
                 ),
-                vol.Required(CONF_UPDATE_MODE, default=UPDATE_MODE_HOURLY): config_entries.selector.SelectSelector(
-                    config_entries.selector.SelectSelectorConfig(
+                vol.Required(CONF_UPDATE_MODE, default=UPDATE_MODE_HOURLY): selector.SelectSelector(
+                    selector.SelectSelectorConfig(
                         options=[UPDATE_MODE_HOURLY, UPDATE_MODE_DAILY],
                         mode="dropdown",
                     )
@@ -82,18 +83,18 @@ class MeteoblueOptionsFlowHandler(config_entries.OptionsFlow):
 
         schema = vol.Schema(
             {
-                vol.Required(CONF_PACKAGES, default=self.config_entry.options.get(CONF_PACKAGES, self.config_entry.data[CONF_PACKAGES])): config_entries.selector.SelectSelector(
-                    config_entries.selector.SelectSelectorConfig(
+                vol.Required(CONF_PACKAGES, default=self.config_entry.options.get(CONF_PACKAGES, self.config_entry.data[CONF_PACKAGES])): selector.SelectSelector(
+                    selector.SelectSelectorConfig(
                         options=[
-                            config_entries.selector.SelectOptionDict(value=k, label=v)
+                            selector.SelectOptionDict(value=k, label=v)
                             for k, v in PACKAGE_LABELS.items()
                         ],
                         multiple=True,
                         mode="dropdown",
                     )
                 ),
-                vol.Required(CONF_UPDATE_MODE, default=self.config_entry.options.get(CONF_UPDATE_MODE, UPDATE_MODE_HOURLY)): config_entries.selector.SelectSelector(
-                    config_entries.selector.SelectSelectorConfig(options=[UPDATE_MODE_HOURLY, UPDATE_MODE_DAILY], mode="dropdown")
+                vol.Required(CONF_UPDATE_MODE, default=self.config_entry.options.get(CONF_UPDATE_MODE, UPDATE_MODE_HOURLY)): selector.SelectSelector(
+                    selector.SelectSelectorConfig(options=[UPDATE_MODE_HOURLY, UPDATE_MODE_DAILY], mode="dropdown")
                 ),
                 vol.Required(CONF_UPDATE_INTERVAL_HOURS, default=self.config_entry.options.get(CONF_UPDATE_INTERVAL_HOURS, 1)): vol.All(vol.Coerce(int), vol.Range(min=1, max=24)),
                 vol.Required(CONF_DAILY_HOUR, default=self.config_entry.options.get(CONF_DAILY_HOUR, 6)): vol.All(vol.Coerce(int), vol.Range(min=0, max=23)),

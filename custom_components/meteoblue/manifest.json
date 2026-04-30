@@ -1,0 +1,15 @@
+{
+  "domain": "meteoblue",
+  "name": "Meteoblue",
+  "codeowners": [
+    "@local"
+  ],
+  "config_flow": true,
+  "documentation": "https://my.meteoblue.com/packages/redoc",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "loggers": [
+    "custom_components.meteoblue"
+  ],
+  "requirements": []
+}

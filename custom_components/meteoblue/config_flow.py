@@ -6,8 +6,10 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
 from homeassistant.helpers import selector
+from aiohttp import ClientError
 
 from .const import *
+from .api import MeteoblueApiClient
 
 
 class MeteoblueConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -31,7 +33,17 @@ class MeteoblueConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_PACKAGES: user_input[CONF_PACKAGES],
             }
 
-            return self.async_create_entry(title="Meteoblue", data=data, options={
+            try:
+                client = MeteoblueApiClient(self.hass, user_input[CONF_API_KEY])
+                first_package = user_input[CONF_PACKAGES][0]
+                await client.async_fetch_package(first_package, lat, lon)
+            except ClientError:
+                errors["base"] = "cannot_connect"
+            except Exception:
+                errors["base"] = "unknown"
+
+            if not errors:
+                return self.async_create_entry(title="Meteoblue", data=data, options={
                 CONF_PACKAGES: user_input[CONF_PACKAGES],
                 CONF_UPDATE_MODE: user_input[CONF_UPDATE_MODE],
                 CONF_UPDATE_INTERVAL_HOURS: user_input[CONF_UPDATE_INTERVAL_HOURS],

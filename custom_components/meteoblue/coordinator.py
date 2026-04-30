@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta
+import logging
 from typing import Any
 
 from homeassistant.core import HomeAssistant
@@ -22,12 +23,15 @@ from .const import (
 )
 
 
+LOGGER = logging.getLogger(__name__)
+
+
 class MeteoblueCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     def __init__(self, hass: HomeAssistant, entry) -> None:
         self._entry = entry
         self._client = MeteoblueApiClient(hass, entry.data["api_key"])
         interval = timedelta(hours=entry.options.get(CONF_UPDATE_INTERVAL_HOURS, 1))
-        super().__init__(hass, None, name="meteoblue", update_interval=interval)
+        super().__init__(hass, LOGGER, name="meteoblue", update_interval=interval)
 
     async def _async_update_data(self) -> dict[str, Any]:
         options = self._entry.options

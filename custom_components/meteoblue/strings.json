@@ -15,6 +15,10 @@
           "daily_hour": "Daily update hour"
         }
       }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect",
+      "unknown": "Unexpected error"
     }
   },
   "options": {

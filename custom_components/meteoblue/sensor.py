@@ -13,7 +13,6 @@ from homeassistant.const import (
     UnitOfEnergy,
     UnitOfIrradiance,
     UnitOfPower,
-    UnitOfPrecipitationDepth,
     UnitOfSpeed,
     UnitOfTemperature,
 )
@@ -38,7 +37,7 @@ PACKAGE_SENSORS: dict[str, list[MeteoblueSensorDescription]] = {
     "basic": [
         MeteoblueSensorDescription("temperature", "Temperature", ("current", "temperature"), UnitOfTemperature.CELSIUS, SensorDeviceClass.TEMPERATURE),
         MeteoblueSensorDescription("relative_humidity", "Relative Humidity", ("current", "relativehumidity"), PERCENTAGE, SensorDeviceClass.HUMIDITY),
-        MeteoblueSensorDescription("precipitation", "Precipitation", ("current", "precipitation"), UnitOfPrecipitationDepth.MILLIMETERS, SensorDeviceClass.PRECIPITATION),
+        MeteoblueSensorDescription("precipitation", "Precipitation", ("current", "precipitation"), "mm", SensorDeviceClass.PRECIPITATION),
         MeteoblueSensorDescription("wind_speed", "Wind Speed", ("current", "windspeed"), UnitOfSpeed.KILOMETERS_PER_HOUR, SensorDeviceClass.WIND_SPEED),
         MeteoblueSensorDescription("uv_index", "UV Index", ("current", "uvindex"), None, None),
         MeteoblueSensorDescription("sunshine_minutes", "Sunshine Minutes", ("current", "sunshinetime"), "min", None),

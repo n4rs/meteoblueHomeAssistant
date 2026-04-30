@@ -48,7 +48,7 @@ class MeteoblueConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_PACKAGES, default=[PACKAGE_BASIC, PACKAGE_CURRENT]): selector.SelectSelector(
                     selector.SelectSelectorConfig(
                         options=[
-                            selector.SelectOptionDict(value=k, label=v)
+                            {"value": k, "label": v}
                             for k, v in PACKAGE_LABELS.items()
                         ],
                         multiple=True,
@@ -86,7 +86,7 @@ class MeteoblueOptionsFlowHandler(config_entries.OptionsFlow):
                 vol.Required(CONF_PACKAGES, default=self.config_entry.options.get(CONF_PACKAGES, self.config_entry.data[CONF_PACKAGES])): selector.SelectSelector(
                     selector.SelectSelectorConfig(
                         options=[
-                            selector.SelectOptionDict(value=k, label=v)
+                            {"value": k, "label": v}
                             for k, v in PACKAGE_LABELS.items()
                         ],
                         multiple=True,

@@ -1,0 +1,7 @@
+{
+  "name": "Meteoblue",
+  "content_in_root": false,
+  "country": ["PT", "US", "ES"],
+  "homeassistant": "2024.1.0",
+  "render_readme": true
+}

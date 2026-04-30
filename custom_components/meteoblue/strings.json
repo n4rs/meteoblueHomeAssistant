@@ -1,0 +1,37 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Meteoblue",
+        "description": "Configure Meteoblue API access",
+        "data": {
+          "api_key": "API key",
+          "use_ha_location": "Use Home Assistant location",
+          "latitude": "Latitude",
+          "longitude": "Longitude",
+          "packages": "Packages",
+          "update_mode": "Update mode",
+          "update_interval_hours": "Update interval (hours)",
+          "daily_hour": "Daily update hour"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect",
+      "unknown": "Unexpected error"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Meteoblue options",
+        "data": {
+          "packages": "Packages",
+          "update_mode": "Update mode",
+          "update_interval_hours": "Update interval (hours)",
+          "daily_hour": "Daily update hour"
+        }
+      }
+    }
+  }
+}

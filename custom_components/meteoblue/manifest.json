@@ -11,5 +11,7 @@
   "loggers": [
     "custom_components.meteoblue"
   ],
-  "requirements": []
+  "requirements": [],
+  "version": "0.1.2",
+  "issue_tracker": "https://github.com/local/meteoblueHomeAssistant/issues"
 }

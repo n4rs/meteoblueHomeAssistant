@@ -12,7 +12,12 @@
           "packages": "Packages",
           "update_mode": "Update mode",
           "update_interval_hours": "Update interval (hours)",
-          "daily_hour": "Daily update hour"
+          "daily_hour": "Daily update hour",
+          "pvpro_kwp": "PV PRO kWp",
+          "pvpro_slope": "PV PRO slope",
+          "pvpro_facing": "PV PRO facing",
+          "pvpro_tracker": "PV PRO tracker",
+          "pvpro_power_efficiency": "PV PRO efficiency (0..1)"
         }
       }
     },
@@ -29,7 +34,12 @@
           "packages": "Packages",
           "update_mode": "Update mode",
           "update_interval_hours": "Update interval (hours)",
-          "daily_hour": "Daily update hour"
+          "daily_hour": "Daily update hour",
+          "pvpro_kwp": "PV PRO kWp",
+          "pvpro_slope": "PV PRO slope",
+          "pvpro_facing": "PV PRO facing",
+          "pvpro_tracker": "PV PRO tracker",
+          "pvpro_power_efficiency": "PV PRO efficiency (0..1)"
         }
       }
     }

@@ -48,12 +48,20 @@ class MeteoblueCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         pvpro_params = self._entry.options.get(CONF_PVPRO_PARAMS, {})
 
         result: dict[str, Any] = {}
+        errors: list[str] = []
         for package in packages:
             extra = pvpro_params if package == "pvpro" else None
             try:
                 result[package] = await self._client.async_fetch_package(package, lat, lon, extra)
             except Exception as err:
-                raise UpdateFailed(f"Error fetching package {package}: {err}") from err
+                errors.append(f"{package}: {err}")
+                LOGGER.warning("Error fetching package %s: %s", package, err)
+
+        if not result:
+            raise UpdateFailed(f"No package data fetched successfully. Errors: {'; '.join(errors)}")
+
+        if errors:
+            result["_errors"] = errors
 
         result["_meta"] = {"last_update": datetime.utcnow().isoformat()}
         return result

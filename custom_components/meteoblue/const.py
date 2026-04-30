@@ -15,6 +15,12 @@ CONF_UPDATE_INTERVAL_HOURS = "update_interval_hours"
 CONF_DAILY_HOUR = "daily_hour"
 CONF_PVPRO_PARAMS = "pvpro_params"
 
+CONF_PVPRO_KWP = "pvpro_kwp"
+CONF_PVPRO_SLOPE = "pvpro_slope"
+CONF_PVPRO_FACING = "pvpro_facing"
+CONF_PVPRO_TRACKER = "pvpro_tracker"
+CONF_PVPRO_POWER_EFFICIENCY = "pvpro_power_efficiency"
+
 UPDATE_MODE_HOURLY = "hourly"
 UPDATE_MODE_DAILY = "daily"
 

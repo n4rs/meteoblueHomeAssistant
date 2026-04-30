@@ -33,6 +33,19 @@ class MeteoblueConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_PACKAGES: user_input[CONF_PACKAGES],
             }
 
+            pvpro_params = {}
+            if PACKAGE_PVPRO in user_input[CONF_PACKAGES]:
+                if user_input.get(CONF_PVPRO_KWP) is not None:
+                    pvpro_params["kwp"] = user_input[CONF_PVPRO_KWP]
+                if user_input.get(CONF_PVPRO_SLOPE) is not None:
+                    pvpro_params["slope"] = user_input[CONF_PVPRO_SLOPE]
+                if user_input.get(CONF_PVPRO_FACING) is not None:
+                    pvpro_params["facing"] = user_input[CONF_PVPRO_FACING]
+                if user_input.get(CONF_PVPRO_TRACKER):
+                    pvpro_params["tracker"] = user_input[CONF_PVPRO_TRACKER]
+                if user_input.get(CONF_PVPRO_POWER_EFFICIENCY) is not None:
+                    pvpro_params["power_efficiency"] = user_input[CONF_PVPRO_POWER_EFFICIENCY]
+
             try:
                 client = MeteoblueApiClient(self.hass, user_input[CONF_API_KEY])
                 first_package = user_input[CONF_PACKAGES][0]
@@ -48,7 +61,7 @@ class MeteoblueConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_UPDATE_MODE: user_input[CONF_UPDATE_MODE],
                 CONF_UPDATE_INTERVAL_HOURS: user_input[CONF_UPDATE_INTERVAL_HOURS],
                 CONF_DAILY_HOUR: user_input[CONF_DAILY_HOUR],
-                CONF_PVPRO_PARAMS: {},
+                CONF_PVPRO_PARAMS: pvpro_params,
             })
 
         schema = vol.Schema(
@@ -75,6 +88,11 @@ class MeteoblueConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 ),
                 vol.Required(CONF_UPDATE_INTERVAL_HOURS, default=1): vol.All(vol.Coerce(int), vol.Range(min=1, max=24)),
                 vol.Required(CONF_DAILY_HOUR, default=6): vol.All(vol.Coerce(int), vol.Range(min=0, max=23)),
+                vol.Optional(CONF_PVPRO_KWP): vol.Coerce(float),
+                vol.Optional(CONF_PVPRO_SLOPE): vol.All(vol.Coerce(int), vol.Range(min=0, max=90)),
+                vol.Optional(CONF_PVPRO_FACING): vol.All(vol.Coerce(int), vol.Range(min=0, max=360)),
+                vol.Optional(CONF_PVPRO_TRACKER): str,
+                vol.Optional(CONF_PVPRO_POWER_EFFICIENCY): vol.All(vol.Coerce(float), vol.Range(min=0, max=1)),
             }
         )
         return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
@@ -91,6 +109,18 @@ class MeteoblueOptionsFlowHandler(config_entries.OptionsFlow):
 
     async def async_step_init(self, user_input=None):
         if user_input is not None:
+            pvpro_params = {}
+            if user_input.get(CONF_PVPRO_KWP) is not None:
+                pvpro_params["kwp"] = user_input.pop(CONF_PVPRO_KWP)
+            if user_input.get(CONF_PVPRO_SLOPE) is not None:
+                pvpro_params["slope"] = user_input.pop(CONF_PVPRO_SLOPE)
+            if user_input.get(CONF_PVPRO_FACING) is not None:
+                pvpro_params["facing"] = user_input.pop(CONF_PVPRO_FACING)
+            if user_input.get(CONF_PVPRO_TRACKER):
+                pvpro_params["tracker"] = user_input.pop(CONF_PVPRO_TRACKER)
+            if user_input.get(CONF_PVPRO_POWER_EFFICIENCY) is not None:
+                pvpro_params["power_efficiency"] = user_input.pop(CONF_PVPRO_POWER_EFFICIENCY)
+            user_input[CONF_PVPRO_PARAMS] = pvpro_params
             return self.async_create_entry(title="", data=user_input)
 
         schema = vol.Schema(
@@ -110,6 +140,11 @@ class MeteoblueOptionsFlowHandler(config_entries.OptionsFlow):
                 ),
                 vol.Required(CONF_UPDATE_INTERVAL_HOURS, default=self.config_entry.options.get(CONF_UPDATE_INTERVAL_HOURS, 1)): vol.All(vol.Coerce(int), vol.Range(min=1, max=24)),
                 vol.Required(CONF_DAILY_HOUR, default=self.config_entry.options.get(CONF_DAILY_HOUR, 6)): vol.All(vol.Coerce(int), vol.Range(min=0, max=23)),
+                vol.Optional(CONF_PVPRO_KWP, default=self.config_entry.options.get(CONF_PVPRO_PARAMS, {}).get("kwp")): vol.Coerce(float),
+                vol.Optional(CONF_PVPRO_SLOPE, default=self.config_entry.options.get(CONF_PVPRO_PARAMS, {}).get("slope")): vol.All(vol.Coerce(int), vol.Range(min=0, max=90)),
+                vol.Optional(CONF_PVPRO_FACING, default=self.config_entry.options.get(CONF_PVPRO_PARAMS, {}).get("facing")): vol.All(vol.Coerce(int), vol.Range(min=0, max=360)),
+                vol.Optional(CONF_PVPRO_TRACKER, default=self.config_entry.options.get(CONF_PVPRO_PARAMS, {}).get("tracker", "")): str,
+                vol.Optional(CONF_PVPRO_POWER_EFFICIENCY, default=self.config_entry.options.get(CONF_PVPRO_PARAMS, {}).get("power_efficiency")): vol.All(vol.Coerce(float), vol.Range(min=0, max=1)),
             }
         )
         return self.async_show_form(step_id="init", data_schema=schema)
